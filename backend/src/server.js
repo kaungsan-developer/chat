@@ -3,16 +3,21 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import db_connect from "./libs/db.js";
 
-import userRouter from "./routes/userRoutes.js";
+import authRouter from "./routes/authRoute.js";
 import messageRouter from "./routes/messageRoute.js";
+import userRouter from "./routes/userRoute.js";
+
+import AuthMiddleware from "./middlewares/AuthMiddleware.js";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/users", AuthMiddleware, userRouter);
 app.use("/api/message", messageRouter);
+
 const PORT = process.env.PORT || 9984;
 await db_connect();
 app.listen(PORT, () => {
