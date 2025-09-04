@@ -102,7 +102,7 @@ export default function Register() {
           </div>
         </form>
         <div className="divider"></div>
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <Link to={"/login"} className="text-sm">
             Already have account? <span className="text-primary">Login</span>
           </Link>

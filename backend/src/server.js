@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import db_connect from "./libs/db.js";
+import cors from "cors";
 
+import db_connect from "./libs/db.js";
 import authRouter from "./routes/authRoute.js";
 import messageRouter from "./routes/messageRoute.js";
 import userRouter from "./routes/userRoute.js";
@@ -11,7 +12,13 @@ import AuthMiddleware from "./middlewares/AuthMiddleware.js";
 
 dotenv.config();
 const app = express();
-app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);

@@ -6,6 +6,7 @@ import axiosInstance from "../libs/axiosInstance";
 import { useAuthStore } from "../store/useAuthStore";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { Eye, EyeClosed } from "lucide-react";
 
 async function postLogin(data) {
   const res = await axiosInstance.post("/auth/login", data);
@@ -14,6 +15,7 @@ async function postLogin(data) {
 export default function Register() {
   const [isLoginRunning, setIsLoginRunning] = useState(false);
   const { setAuthUser } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -59,18 +61,32 @@ export default function Register() {
                 <p className="text-xs text-error">This field is required</p>
               )}
             </div>
+
             <div>
-              <label htmlFor="password" className="text-sm">
+              <label htmlFor="password" className="text-sm block">
                 Password
               </label>
-              <input
-                type="password"
-                className="input input-accent focus:outline-0 "
-                {...register("password", { required: true })}
-              />
-              {errors.password && (
-                <p className="text-xs text-error">This field is required</p>
-              )}
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="input input-accent focus:outline-none"
+                  {...register("password", { required: true })}
+                />
+                {errors.password && (
+                  <p className="text-xs text-error">This field is required</p>
+                )}
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-xs absolute right-2 top-2 z-10"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <Eye className="size-5" />
+                  ) : (
+                    <EyeClosed className="size-5" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex justify-end items-center mt-4">
@@ -88,7 +104,7 @@ export default function Register() {
           </div>
         </form>
         <div className="divider"></div>
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <Link to={"/register"} className="text-sm">
             Already have account? <span className="text-primary">Register</span>
           </Link>
